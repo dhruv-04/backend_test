@@ -15,7 +15,7 @@ const createUserHandler = async(req, res) => {
     } catch (err) {
         res.status(500).send('An Error Occured! User cannot be created.');
     }
-};
+}
 
 
 //function handler to get user by username
