@@ -32,8 +32,8 @@ const getUserByUsername = async (username) => {
     `;
 
     try {
-        const [rows] = db.query(query, [username]);
-        return (rows.length() > 0) ? rows[0] : null;
+        const [rows] = await db.query(query, [username]);
+        return (rows.length > 0) ? rows[0] : null;
     } catch(err) {
         throw err;
     }

@@ -1,8 +1,4 @@
-const { createUser, 
-    getUserByUsername,
-    updateUser,
-    deleteUser,
-} = require('../models/userModel');
+const { createUser, getUserByUsername, updateUser, deleteUser } = require('../models/userModel');
 const { compareHashPassword, createHashPassword } = require('../utils/hashPassword');
 
 //function handler to create user during registration
