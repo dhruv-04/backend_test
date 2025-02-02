@@ -5,10 +5,10 @@ const rounds = 10;
 
 
 //function to create the hash for the password
-const createHashPassword = async () => {
+const createHashPassword = async (password) => {
     try{
         const hash = await bcrypt.hash(password, rounds);
-        return hash;
+        return hash; //contains a random string as a hash using bcrypt
     } catch (err) {
         console.error('Error while generating the hash.');
         throw err;
@@ -17,10 +17,10 @@ const createHashPassword = async () => {
 
 
 //function to check for authentication
-const compareHashPassword = async() => {
+const compareHashPassword = async(password, hashedPassword) => {
     try {
         const result = await bcrypt.compare(password, hashedPassword);
-        return result;
+        return result; 
     } catch (err) {
         console.error('Error while comparing the password');
         throw err;
