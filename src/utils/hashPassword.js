@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const {password} = require('../controllers/userHandler')
+// const {password} = require('../controllers/userHandler')
 
 const rounds = 10;
 
@@ -20,7 +20,7 @@ const createHashPassword = async (password) => {
 const compareHashPassword = async(password, hashedPassword) => {
     try {
         const result = await bcrypt.compare(password, hashedPassword);
-        return result; 
+        return result; //returns a boolean value
     } catch (err) {
         console.error('Error while comparing the password');
         throw err;
