@@ -22,8 +22,9 @@ const insertAdminValue = async(admin) => {
         console.log('Data Inserted in adminModel!');
     } catch (err) {
         console.error(`Error inserting the record : ${err}`);
+        throw err;
     }
-}
+};
 
 //function to delete a record from the admin model
 const deleteAdminValue = async (username) => {
@@ -45,8 +46,8 @@ const fetchRecord = async (username) => {
     const [rows] = await pool.query(query, [username]);
     return rows;
   } catch (err) {
+    console.error(`Error fetching record: ${err}`);
     throw err;
-    // console.error(`Error fetching record: ${err}`);
   }
 };
 
