@@ -145,10 +145,11 @@ const insertpastGuestData = async(user) => {
         VALUES (?, ?, ?, ?, ?, ?);`;
         await pool.query(query, [guest_ID, username, first_Name, last_Name, phone_Number, address]);
         console.log('Insertion in the pastGuest table successful!');
-        return true;
+        // return true;
     } catch (err) {
         console.error(`Error while registering past guest : ${err}`);
-        return false;
+        // return false;
+        throw err;
     }
 };
 

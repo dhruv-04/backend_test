@@ -142,6 +142,75 @@ const fetchRoomService = async (serviceCode) => {
     }
 };
 
+
+// Function to create Complaint Table
+const createComplaintTable = async () => {
+    try {
+        const createTableQuery = `
+        CREATE TABLE IF NOT EXISTS complaints (
+            guest_ID INTEGER,
+            username VARCHAR(50) NOT NULL,
+            room_number INTEGER NOT NULL,
+            complaint TEXT
+        );
+        `;
+        await pool.query(createTableQuery);
+        console.log('Table complaints created successfully!');
+    } catch (err) {
+        console.log(`Error creating table: ${err}`);
+        throw err;
+    }
+};
+
+// Function to fetch all complaints
+const fetchAllComplaints = async () => {
+    try {
+        const query = `SELECT * FROM complaints;`;
+        const [rows] = await pool.query(query);
+        return [rows];
+    } catch (err) {
+        console.error(`Error fetching all complaints: ${err}`);
+        throw err;
+    }
+};
+
+// Function to fetch a complaint based on guest_ID
+const fetchComplaint = async (guest_ID) => {
+    try {
+        const query = `SELECT * FROM complaints WHERE guest_ID = ?;`;
+        const [rows] = await pool.query(query, [guest_ID]);
+        return [rows];
+    } catch (err) {
+        console.error(`Error fetching complaint for guest_ID ${guest_ID}: ${err}`);
+        throw err;
+    }
+};
+
+// Function to insert a complaint
+const insertComplaint = async (complaintData) => {
+    try {
+        const { guest_ID, username, room_number, complaint } = complaintData;
+        const query = `INSERT INTO complaints (guest_ID, username, room_number, complaint) VALUES (?, ?, ?, ?);`;
+        await pool.query(query, [guest_ID, username, room_number, complaint]);
+        console.log('Insertion of complaint successful!');
+    } catch (err) {
+        console.error(`Error inserting complaint: ${err}`);
+        throw err;
+    }
+};
+
+// Function to delete a complaint based on guest_ID
+const deleteComplaint = async (guest_ID) => {
+    try {
+        const query = `DELETE FROM complaints WHERE guest_ID = ?;`;
+        await pool.query(query, [guest_ID]);
+        console.log(`Deletion of complaint for guest_ID ${guest_ID} successful!`);
+    } catch (err) {
+        console.error(`Error deleting complaint for guest_ID ${guest_ID}: ${err}`);
+        throw err;
+    }
+};
+
 module.exports = {
     // roomAvailability
     createRoomTable,
@@ -156,4 +225,11 @@ module.exports = {
     insertRoomServiceValues,
     fetchAllRoomService,
     fetchRoomService,
+
+    // complaints
+    createComplaintTable,
+    fetchAllComplaints,
+    fetchComplaint,
+    insertComplaint,
+    deleteComplaint,
 };
