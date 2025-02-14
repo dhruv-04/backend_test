@@ -21,6 +21,6 @@ router.get('/viewComplaints', viewComplaints);
 router.get('/viewComplaints/:guest_ID', viewGuestComplaints);
 
 //endpoint to logout the admin
-router.post('/logout', adminLogout);
+router.delete('/logout', adminLogout);
 
 module.exports = router;
