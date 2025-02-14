@@ -52,9 +52,31 @@ const searchGuest = async(req, res) => {
 const generateBill = async(req, res) => {
     try {
         //business logic
-        res.status(200).json({ message: 'Bill Generated!' });
+        const guestID = req.params.guest_ID;
+        const { fetchGuestData, fetchServiceData, insertpastGuestData, deleteServiceData, deleteGuestData } = require('../models/guestModel');
+        const [ guestData ] = await fetchGuestData(guestID);
+        if(guestData.length > 0) {
+            const [ roomServiceData ] = await fetchServiceData(guestID);
+            const roomServiceCost = roomServiceData.reduce((sum, data) => data.service_cost, 0);
+            const bill = guestData[0].number_Of_Nights * 1000 + roomServiceCost; //hardcode
+            guestData[0].total_bill = bill
+            const pastGuest = {
+                guest_ID: guestData[0].guest_ID,
+                username: guestData[0].username,
+                first_Name: guestData[0].first_Name,
+                last_Name: guestData[0].last_Name,
+                phone_Number: guestData[0].phone_Number,
+                address: guestData[0].address
+            }
+            await insertpastGuestData(pastGuest);
+            await deleteServiceData(guestData[0].guest_ID);
+            await deleteGuestData(guestData[0].guest_ID);
+            res.status(200).json({ message: 'Bill Generated!', data: guestData });
+        } else {
+            res.status(404).json({ message: "Guest not found!" });
+        }
     } catch (err) {
-        console.log(`Error creating guest account : ${err}`);
+        console.log(`Error generating bill for the given guest ID : ${err}`);
         res.status(500).json({ message : 'INTERNAL SERVER ERROR', error: err.message });
     } 
 };
